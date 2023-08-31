@@ -11,10 +11,10 @@ class User < ApplicationRecord
       validates :last_name
       validates :first_name
     end
-    with_options format: { with: /\A[ァ-ヶ一]+\z/, allow_blank: true } do
+    with_options format: { with: /\A[ァ-ヶー]+\z/, allow_blank: true } do
       validates :last_name_kana
       validates :first_name_kana
     end
   end
-  validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i, allow_blank: true }
+  validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i, }
 end
