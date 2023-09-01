@@ -1,14 +1,11 @@
 class ItemsController < ApplicationController
+  before_action :move_to_user_session, except: :index
+
   def index
   end
 
   def new
     @item = Item.new
-    if user_signed_in?
-      render :new
-    else
-      redirect_to user_session_path
-    end
   end
 
   def create
@@ -24,5 +21,11 @@ class ItemsController < ApplicationController
 
   def item_params
     params.require(:item).permit(:name,:explanation,:category_id,:condition_id,:shipping_charge_id,:prefecture_id,:shipping_day_id,:price).merge(user_id: current_user.id)
+  end
+
+  def move_to_user_session
+    unless user_signed_in?
+      redirect_to user_session_path
+    end
   end
 end
