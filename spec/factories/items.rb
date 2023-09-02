@@ -7,7 +7,7 @@ FactoryBot.define do
     shipping_charge    { ShippingCharge.all.sample }
     prefecture         { Prefecture.all.sample }
     shipping_day       { ShippingDay.all.sample }
-    price              { Faker::Number.within(range: 300..9999999) }
+    price              { Faker::Number.within(range: 300..9_999_999) }
     user
 
     after(:build) do |item|
