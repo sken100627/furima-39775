@@ -46,7 +46,7 @@ class ItemsController < ApplicationController
   end
 
   def login_restrictions
-    if user_signed_in? && current_user.id != @item.user.id
+    if current_user.id != @item.user.id
       redirect_to root_path
     end
   end
