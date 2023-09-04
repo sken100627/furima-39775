@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_item, only: [:show, :edit]
+  before_action :login_restrictions, except: [:index, :show]  
 
   def index
     @items = Item.includes(:user).order('created_at DESC')
@@ -27,8 +28,12 @@ class ItemsController < ApplicationController
 
   def update
     item = Item.find(params[:id])
-    item.update(item_params)
-    redirect_to item_path
+    
+    if item.update(item_params)
+      redirect_to item_path
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private
@@ -40,5 +45,11 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def login_restrictions
+    if user_signed_in? && current_user.id != @item.user.id
+      redirect_to root_path
+    end
   end
 end
