@@ -1,6 +1,6 @@
 class PurchaseForm
   include ActiveModel::Model
-  attr_accessor :post_code, :prefecture_id, :municipality, :street_address, :building, :telephone_number, :user_id, :item_id
+  attr_accessor :post_code, :prefecture_id, :municipality, :street_address, :building, :telephone_number, :user_id, :item_id, :token
 
   # ここにバリデーションの処理を書く
   with_options presence: true do
@@ -11,6 +11,7 @@ class PurchaseForm
     validates :telephone_number, format: {with: /\A\d{10,11}\z/, allow_blank: true}
     validates :user_id
     validates :item_id
+    validates :token, presence: true
   end
 
   def save
