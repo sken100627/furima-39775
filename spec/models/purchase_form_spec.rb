@@ -13,9 +13,9 @@ RSpec.describe PurchaseForm, type: :model do
         expect(@purchase_form).to be_valid
       end
     end
-    
+
     context '内容に問題がある場合' do
-      it "tokenが空では登録できないこと" do
+      it 'tokenが空では登録できないこと' do
         @purchase_form.token = nil
         @purchase_form.valid?
         expect(@purchase_form.errors.full_messages).to include("Token can't be blank")
@@ -28,7 +28,7 @@ RSpec.describe PurchaseForm, type: :model do
       it 'post_codeが(-)なしだと保存できないこと' do
         @purchase_form.post_code = '1234567'
         @purchase_form.valid?
-        expect(@purchase_form.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
+        expect(@purchase_form.errors.full_messages).to include('Post code is invalid. Include hyphen(-)')
       end
       it 'prefecture_idが空だと保存できないこと' do
         @purchase_form.prefecture_id = ''
@@ -38,7 +38,7 @@ RSpec.describe PurchaseForm, type: :model do
       it 'prefecture_idに「---」が選択されている場合は保存できないこと' do
         @purchase_form.prefecture_id = 1
         @purchase_form.valid?
-        expect(@purchase_form.errors.full_messages).to include("Prefecture must be other than 1")
+        expect(@purchase_form.errors.full_messages).to include('Prefecture must be other than 1')
       end
       it 'municipalityが空だと保存できないこと' do
         @purchase_form.municipality = ''
@@ -58,9 +58,8 @@ RSpec.describe PurchaseForm, type: :model do
       it 'telephone_numberに(-)がある場合は保存できないこと' do
         @purchase_form.telephone_number = '090-1234-5678'
         @purchase_form.valid?
-        expect(@purchase_form.errors.full_messages).to include("Telephone number is invalid")
+        expect(@purchase_form.errors.full_messages).to include('Telephone number is invalid')
       end
     end
-
   end
 end

@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
-  before_action :login_restrictions, only: :edit  
+  before_action :login_restrictions, only: :edit
 
   def index
     @items = Item.includes(:user).order('created_at DESC')
@@ -23,10 +23,10 @@ class ItemsController < ApplicationController
   def show
   end
 
-  def edit 
-    if @item.order.present?
-        redirect_to root_path
-    end
+  def edit
+    return unless @item.order.present?
+
+    redirect_to root_path
   end
 
   def update
@@ -58,8 +58,8 @@ class ItemsController < ApplicationController
   end
 
   def login_restrictions
-    if current_user.id != @item.user.id
-      redirect_to root_path
-    end
+    return unless current_user.id != @item.user.id
+
+    redirect_to root_path
   end
 end
