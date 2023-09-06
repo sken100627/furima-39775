@@ -1,4 +1,8 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :purchase_regulations
+  before_action :sold_myself
+
   def index
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @item = Item.find(params[:item_id])
@@ -32,6 +36,20 @@ class OrdersController < ApplicationController
         card: order_params[:token],
         currency: 'jpy'
       )
+  end
+
+  def purchase_regulations
+    @item = Item.find(params[:item_id])
+    if @item.order.present?
+      redirect_to root_path
+    end
+  end
+
+  def sold_myself
+    @item = Item.find(params[:item_id])
+    if current_user.id == @item.user.id
+      redirect_to root_path
+    end
   end
 
 end
