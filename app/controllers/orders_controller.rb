@@ -2,10 +2,9 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :purchase_regulations
   before_action :sold_myself
+  before_action :set_order
 
   def index
-    gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-    @item = Item.find(params[:item_id])
     @purchase_form = PurchaseForm.new
   end
 
@@ -17,8 +16,6 @@ class OrdersController < ApplicationController
       @purchase_form.save
       redirect_to root_path
     else
-      gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-      @item = Item.find(params[:item_id])
       render :index, status: :unprocessable_entity
     end
   end
@@ -53,4 +50,10 @@ class OrdersController < ApplicationController
 
     redirect_to root_path
   end
+
+  def set_order
+    gon.public_key = ENV['PAYJP_PUBLIC_KEY']
+    @item = Item.find(params[:item_id])
+  end
+
 end
