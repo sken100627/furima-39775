@@ -12,6 +12,10 @@ RSpec.describe PurchaseForm, type: :model do
       it 'すべての値が正しく入力されていれば保存できること' do
         expect(@purchase_form).to be_valid
       end
+      it '建物名がなくても保存できること' do
+        @purchase_form.building = ''
+        expect(@purchase_form).to be_valid
+      end
     end
 
     context '内容に問題がある場合' do
@@ -58,7 +62,27 @@ RSpec.describe PurchaseForm, type: :model do
       it 'telephone_numberに(-)がある場合は保存できないこと' do
         @purchase_form.telephone_number = '090-1234-5678'
         @purchase_form.valid?
+        expect(@purchase_form.errors.full_messages).to include("Telephone number is invalid")
+      end
+      it 'telephone_numberが9桁以下では保存できないこと' do
+        @purchase_form.telephone_number = '090123456'
+        @purchase_form.valid?
         expect(@purchase_form.errors.full_messages).to include('Telephone number is invalid')
+      end
+      it 'telephone_numberが12桁以上では保存できないこと' do
+        @purchase_form.telephone_number = '090123456789'
+        @purchase_form.valid?
+        expect(@purchase_form.errors.full_messages).to include('Telephone number is invalid')
+      end
+      it 'user_id（購入者）が空だと購入できない' do
+        @purchase_form.user_id = ''
+        @purchase_form.valid?
+        expect(@purchase_form.errors.full_messages).to include("User can't be blank")
+      end
+      it 'item_id（購入商品）が空だと購入できない' do
+        @purchase_form.item_id = ''
+        @purchase_form.valid?
+        expect(@purchase_form.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
