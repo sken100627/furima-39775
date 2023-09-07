@@ -9,7 +9,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @purchase_form = PurchaseForm.new(order_params)
     if @purchase_form.valid?
       pay_item
@@ -45,7 +44,6 @@ class OrdersController < ApplicationController
   end
 
   def sold_myself
-    @item = Item.find(params[:item_id])
     return unless current_user.id == @item.user.id
 
     redirect_to root_path
@@ -53,7 +51,6 @@ class OrdersController < ApplicationController
 
   def set_order
     gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-    @item = Item.find(params[:item_id])
   end
 
 end
